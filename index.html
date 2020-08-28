@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>点亮地图</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #container {
+            margin: 0 auto;
+            width: 600px;
+            height: 360px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="container"></div>
+    </div>
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=b6e1d2eb0391e8f5546ad437f3f15253"></script>
+    <script type="text/javascript">
+        window.onLoad = function () {
+            var map = new AMap.Map('container', {
+                mapStyle: 'amap://styles/db3c35a7c70de87504bd605ee6b603ad', //设置地图的显示样式
+                // zoom: 11,//级别
+                // center: [116.397428, 39.90923],//中心点坐标
+                // viewMode: '3D'//使用3D视图
+            });
+
+            // 创建 AMap.Icon 实例：
+            var icon = new AMap.Icon({
+                size: new AMap.Size(20, 20),    // 图标尺寸
+                image: './static/img/foot.png',  // Icon的图像
+                // imageOffset: new AMap.Pixel(0, -60),  // 图像相对展示区域的偏移量，适于雪碧图等
+                imageSize: new AMap.Size(20, 20)   // 根据所设置的大小拉伸或压缩图片
+            });
+            // 创建一个 Marker 实例：
+            var marker = new AMap.Marker({
+                position: new AMap.LngLat(116.39, 39.9),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                icon: icon, // 添加 Icon 图标 URL
+                title: '北京'
+            });
+
+            // 将创建的点标记添加到已有的地图实例：
+            map.add(marker);
+        }
+        var url = 'https://webapi.amap.com/maps?v=1.4.15&key=b6e1d2eb0391e8f5546ad437f3f15253&callback=onLoad';
+        var jsapi = document.createElement('script');
+        jsapi.charset = 'utf-8';
+        jsapi.src = url;
+        document.head.appendChild(jsapi);
+    </script>
+</body>
+
+</html>
