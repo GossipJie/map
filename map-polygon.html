@@ -14,7 +14,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
     <script type="text/javascript"
-        src="https://api.map.baidu.com/api?v=2.0&ak=xfhhaTThl11qYVrqLZii6w8qE5ggnhrY&__ec_v__=20190126"></script>
+        src="https://api.map.baidu.com/api?v=2.0&ak=mTtQaOadDpY60rgGwGF2c0F7GFeBeyKt&__ec_v__=20190126"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
     <script type="text/javascript">
         var dom = document.getElementById("container");
@@ -23,17 +23,17 @@
         option = null;
 
         var data = [
-            { name: '天津', value: 175 },
-            { name: '北京', value: 175 },
-            { name: '凤凰', value: 175 }, 
-            { name: '张家界', value: 175 }, 
-            { name: '长沙', value: 175 },
-            { name: '东莞', value: 175 },
-            { name: '广州', value: 175 },
-            { name: '杭州', value: 175 },
-            { name: '厦门', value: 175 },
-            { name: '南昌', value: 54 },
-            { name: '武汉', value: 273 }
+            { name: '天津', value: 50, position: 'right' },
+            { name: '北京', value: 50, position: 'left' },
+            { name: '凤凰', value: 50, position: 'right' },
+            { name: '张家界', value: 50, position: 'bottom' },
+            { name: '长沙', value: 50, position: 'bottom' },
+            { name: '东莞', value: 50, position: '' },
+            { name: '广州', value: 50, position: 'top' },
+            { name: '杭州', value: 50, position: 'bottom' },
+            { name: '厦门', value: 50, position: 'top' },
+            { name: '南昌', value: 50, position: 'bottom' },
+            { name: '武汉', value: 50, position: 'left' }
         ];
 
         var geoCoordMap = {
@@ -236,7 +236,12 @@
                 if (geoCoord) {
                     res.push({
                         name: data[i].name,
-                        value: geoCoord.concat(data[i].value)
+                        value: geoCoord.concat(data[i].value),
+                        label: {
+                            formatter: '{b}',
+                            position: data[i].position || 'right',
+                            show: true
+                        }
                     });
                 }
             }
@@ -246,8 +251,8 @@
         option = {
             backgroundColor: 'transparent',
             title: {
-                text: '全国主要城市空气质量',
-                subtext: 'data from PM25.in',
+                text: '点亮城市',
+                subtext: 'highlight city',
                 sublink: 'http://www.pm25.in',
                 left: 'center',
                 textStyle: {
@@ -260,7 +265,8 @@
             bmap: {
                 center: [104.114129, 37.550339],
                 zoom: 5,
-                map: 'china',
+                type: 'map',
+                mapType: 'china',
                 roam: true,
                 mapStyle: {
                     styleJson: [
@@ -393,6 +399,9 @@
                             }
                         }
                     ]
+                },
+                markArea: {
+                    
                 }
             },
             series: [
@@ -426,7 +435,7 @@
                     coordinateSystem: 'bmap',
                     data: convertData(data.sort(function (a, b) {
                         return b.value - a.value;
-                    }).slice(0, 6)),
+                    }).slice(0, 20)),
                     encode: {
                         value: 2
                     },
@@ -438,11 +447,11 @@
                         brushType: 'stroke'
                     },
                     hoverAnimation: true,
-                    label: {
-                        formatter: '{b}',
-                        position: 'right',
-                        show: true
-                    },
+                    // label: {
+                    //     formatter: '{b}',
+                    //     position: 'right',
+                    //     show: true
+                    // },
                     itemStyle: {
                         color: '#f4e925',
                         shadowBlur: 10,
@@ -450,8 +459,13 @@
                     },
                     zlevel: 1
                 }
-            ]
-        };;
+            ],
+            visualMap: [
+                { // 第一个 visualMap 组件
+                    type: 'continuous', // 定义为连续型 visualMap
+                }
+            ],
+        };
         if (option && typeof option === "object") {
             myChart.setOption(option, true);
         }
